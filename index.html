@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ฟินปาก หมูกระทะ นครสวรรค์</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=Kanit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #c0392b;
+    --primary-dark: #922b21;
+    --primary-light: #e74c3c;
+    --accent: #f39c12;
+    --accent-light: #f1c40f;
+    --bg: #fdf6f0;
+    --surface: #ffffff;
+    --surface2: #fef9f5;
+    --text: #1a1a1a;
+    --text-muted: #7f8c8d;
+    --border: #f0e0d0;
+    --success: #27ae60;
+    --warning: #e67e22;
+    --danger: #e74c3c;
+    --info: #2980b9;
+    --shadow: 0 4px 24px rgba(192,57,43,0.10);
+    --shadow-lg: 0 8px 40px rgba(192,57,43,0.18);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== LOGIN PAGE ===== */
+  #loginPage {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #c0392b 0%, #922b21 40%, #1a0a08 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #loginPage::before {
+    content: '🔥';
+    font-size: 300px;
+    position: absolute;
+    top: -60px; right: -60px;
+    opacity: 0.07;
+    transform: rotate(-20deg);
+  }
+
+  #loginPage::after {
+    content: '🥩';
+    font-size: 200px;
+    position: absolute;
+    bottom: -40px; left: -40px;
+    opacity: 0.07;
+    transform: rotate(15deg);
+  }
+
+  .login-card {
+    background: white;
+    border-radius: 24px;
+    padding: 48px 40px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 1;
+    animation: slideUp 0.5s ease;
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .login-logo {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .login-logo .emoji-big { font-size: 52px; display: block; margin-bottom: 8px; }
+
+  .login-logo h1 {
+    font-family: 'Kanit', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary);
+    line-height: 1.3;
+  }
+
+  .login-logo p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .form-group {
+    margin-bottom: 18px;
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 13px 16px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Sarabun', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    background: var(--surface2);
+    transition: all 0.2s;
+    outline: none;
+  }
+
+  .form-group input:focus {
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(192,57,43,0.1);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 24px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Sarabun', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+    color: white;
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+    box-shadow: 0 4px 16px rgba(192,57,43,0.3);
+  }
+
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(192,57,43,0.4); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-success { background: var(--success); color: white; }
+  .btn-warning { background: var(--warning); color: white; }
+  .btn-danger { background: var(--danger); color: white; }
+  .btn-info { background: var(--info); color: white; }
+  .btn-secondary { background: #ecf0f1; color: var(--text); }
+  .btn-sm { padding: 7px 14px; font-size: 13px; border-radius: 8px; }
+
+  .btn:hover { opacity: 0.92; }
+
+  .error-msg {
+    background: #ffeaea;
+    color: var(--danger);
+    border: 1px solid #ffcccc;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  /* ===== MAIN APP ===== */
+  #app { display: none; min-height: 100vh; }
+
+  /* TOPBAR */
+  .topbar {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+    color: white;
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+  }
+
+  .user-badge {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .btn-logout {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: 'Sarabun', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-logout:hover { background: rgba(255,255,255,0.25); }
+
+  /* NAV TABS */
+  .nav-tabs {
+    background: white;
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    padding: 0 24px;
+    gap: 4px;
+    overflow-x: auto;
+  }
+
+  .nav-tab {
+    padding: 14px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-tab:hover { color: var(--primary); }
+
+  .nav-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+  }
+
+  /* CONTENT */
+  .content {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 28px 20px;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* CARDS */
+  .card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+  }
+
+  .card-title {
+    font-family: 'Kanit', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* SCAN BUTTONS */
+  .scan-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .scan-btn {
+    border: none;
+    border-radius: var(--radius);
+    padding: 28px 20px;
+    cursor: pointer;
+    font-family: 'Kanit', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scan-btn .icon { font-size: 36px; }
+
+  .scan-btn.checkin { background: linear-gradient(135deg, #27ae60, #1e8449); color: white; }
+  .scan-btn.checkout { background: linear-gradient(135deg, #e74c3c, #c0392b); color: white; }
+  .scan-btn.out { background: linear-gradient(135deg, #e67e22, #d35400); color: white; }
+  .scan-btn.back { background: linear-gradient(135deg, #2980b9, #1a5276); color: white; }
+
+  .scan-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .scan-btn:active { transform: translateY(0); }
+
+  .scan-btn .last-time {
+    font-size: 11px;
+    opacity: 0.85;
+    font-family: 'Sarabun', sans-serif;
+    font-weight: 400;
+  }
+
+  /* STATUS INDICATOR */
+  .status-bar {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .status-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .status-dot.green { background: var(--success); box-shadow: 0 0 8px rgba(39,174,96,0.5); }
+  .status-dot.red { background: var(--danger); box-shadow: 0 0 8px rgba(231,76,60,0.5); }
+  .status-dot.orange { background: var(--warning); box-shadow: 0 0 8px rgba(230,126,34,0.5); }
+  .status-dot.gray { background: #bdc3c7; }
+
+  /* HISTORY TABLE */
+  .table-wrap { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  th {
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    font-size: 13px;
+  }
+
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  tr:hover td { background: #fef9f5; }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .badge-success { background: #d5f5e3; color: #1e8449; }
+  .badge-danger { background: #fde8e8; color: #c0392b; }
+  .badge-warning { background: #fef3cd; color: #d35400; }
+  .badge-info { background: #d6eaf8; color: #1a5276; }
+  .badge-gray { background: #ecf0f1; color: #7f8c8d; }
+
+  /* CALENDAR */
+  .calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .calendar-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cal-btn {
+    background: white;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+
+  .cal-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+  .cal-month-label {
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    min-width: 160px;
+    text-align: center;
+  }
+
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .cal-day-header {
+    text-align: center;
+    padding: 8px 4px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  .cal-day {
+    border-radius: 10px;
+    padding: 6px 4px;
+    min-height: 64px;
+    background: white;
+    border: 1px solid var(--border);
+    position: relative;
+    transition: all 0.2s;
+    cursor: default;
+  }
+
+  .cal-day:hover { border-color: var(--primary); z-index: 1; }
+
+  .cal-day.empty { background: transparent; border-color: transparent; }
+  .cal-day.today { border-color: var(--accent); background: #fffbf0; }
+  .cal-day.weekend { background: #fdf5f5; }
+  .cal-day.has-absent { background: #fff0f0; border-color: #ffcccc; }
+
+  .cal-day-num {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .cal-day.today .cal-day-num {
+    background: var(--accent);
+    color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+  }
+
+  .absent-names {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .absent-chip {
+    background: #fde8e8;
+    color: #c0392b;
+    font-size: 9px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 600;
+  }
+
+  /* DASHBOARD */
+  .dash-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+
+  .stat-card .stat-num {
+    font-family: 'Kanit', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-card .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+  .stat-card.present .stat-num { color: var(--success); }
+  .stat-card.absent .stat-num { color: var(--danger); }
+  .stat-card.outside .stat-num { color: var(--warning); }
+  .stat-card.total .stat-num { color: var(--info); }
+
+  /* USER LIST */
+  .user-list { display: flex; flex-direction: column; gap: 10px; }
+
+  .user-row {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    transition: all 0.2s;
+  }
+
+  .user-row:hover { border-color: var(--primary); box-shadow: var(--shadow); }
+
+  .user-row .avatar {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .user-row .user-info { flex: 1; }
+  .user-row .user-info .name { font-weight: 600; font-size: 15px; }
+  .user-row .user-info .sub { font-size: 12px; color: var(--text-muted); }
+  .user-row .user-actions { display: flex; gap: 8px; align-items: center; }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+  .modal {
+    background: white;
+    border-radius: var(--radius);
+    padding: 32px;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    transform: scale(0.95) translateY(10px);
+    transition: all 0.2s;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+
+  .modal-title {
+    font-family: 'Kanit', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .modal-footer {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: flex-end;
+  }
+
+  /* FINGERPRINT ANIMATION */
+  .fingerprint-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    color: white;
+    font-family: 'Kanit', sans-serif;
+    font-size: 20px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .fingerprint-overlay.show { opacity: 1; pointer-events: all; }
+
+  .fp-icon {
+    font-size: 80px;
+    animation: fpPulse 0.8s ease-in-out infinite alternate;
+  }
+
+  @keyframes fpPulse {
+    from { transform: scale(1); filter: brightness(1); }
+    to { transform: scale(1.15); filter: brightness(1.3); }
+  }
+
+  .fp-ring {
+    width: 120px; height: 120px;
+    border: 4px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    position: absolute;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* TOAST */
+  .toast-container {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 3000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+  }
+
+  .toast {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 18px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    min-width: 250px;
+    border-left: 4px solid var(--success);
+    animation: toastIn 0.3s ease;
+    pointer-events: all;
+  }
+
+  .toast.error { border-left-color: var(--danger); }
+  .toast.warning { border-left-color: var(--warning); }
+  .toast.info { border-left-color: var(--info); }
+
+  @keyframes toastIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+
+  /* SELECT */
+  select {
+    padding: 10px 14px;
+    border: 2px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: 'Sarabun', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: white;
+    cursor: pointer;
+    outline: none;
+    transition: border 0.2s;
+  }
+
+  select:focus { border-color: var(--primary); }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0;
+  }
+
+  .location-info {
+    background: #f0f9ff;
+    border: 1px solid #bde0f5;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #1a5276;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+  }
+
+  .empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
+  .empty-state p { font-size: 15px; }
+
+  .date-picker-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .config-note {
+    background: #fffbea;
+    border: 1px dashed var(--accent);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #7d5c00;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .scan-grid { grid-template-columns: 1fr 1fr; }
+    .content { padding: 16px; }
+    .login-card { padding: 32px 24px; }
+    .dash-stats { grid-template-columns: repeat(2, 1fr); }
+    .modal { padding: 24px 18px; }
+    .topbar-brand span:last-child { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- FINGERPRINT OVERLAY -->
+<div class="fingerprint-overlay" id="fpOverlay">
+  <div style="position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center;">
+    <div class="fp-ring"></div>
+    <div class="fp-icon">👆</div>
+  </div>
+  <div id="fpLabel">กำลังสแกนนิ้ว...</div>
+</div>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage">
+  <div class="login-card">
+    <div class="login-logo">
+      <span class="emoji-big">🔥🥩</span>
+      <h1>ฟินปาก หมูกระทะ<br>นครสวรรค์</h1>
+      <p>ระบบบันทึกเวลาพนักงาน</p>
+    </div>
+    <div class="error-msg" id="loginError">❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</div>
+    <div class="form-group">
+      <label>ชื่อผู้ใช้</label>
+      <input type="text" id="loginUser" placeholder="กรอกชื่อผู้ใช้" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>รหัสผ่าน</label>
+      <input type="password" id="loginPass" placeholder="กรอกรหัสผ่าน" autocomplete="current-password">
+    </div>
+    <button class="btn btn-primary" onclick="doLogin()">🔐 เข้าสู่ระบบ</button>
+    <p style="text-align:center;font-size:12px;color:var(--text-muted);margin-top:16px;">Demo: admin/admin123 | user/1234</p>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <span>🔥</span>
+      <span>ฟินปาก หมูกระทะ</span>
+    </div>
+    <div class="topbar-user">
+      <span id="topbarName">-</span>
+      <span class="user-badge" id="topbarRole">-</span>
+      <button class="btn-logout" onclick="doLogout()">ออกจากระบบ</button>
+    </div>
+  </div>
+
+  <!-- NAV TABS -->
+  <div class="nav-tabs" id="navTabs"></div>
+
+  <!-- CONTENT -->
+  <div class="content">
+    <!-- USER: SCAN PAGE -->
+    <div class="page" id="pageScan">
+      <div class="config-note">
+        ⚙️ <strong>หมายเหตุ:</strong> แก้ไข <code>APPS_SCRIPT_URL</code> และ <code>OFFICE_LAT/LNG</code> ในโค้ดเพื่อเชื่อมต่อ Google Sheet จริง
+      </div>
+
+      <div class="card">
+        <div class="card-title">📍 ตำแหน่งปัจจุบัน</div>
+        <div class="location-info" id="locationInfo">
+          🔄 กำลังตรวจสอบตำแหน่ง...
+        </div>
+        <div class="status-bar" id="statusBar">
+          <div class="status-dot gray" id="statusDot"></div>
+          <div>
+            <div style="font-weight:600;font-size:14px;" id="statusText">กำลังโหลด...</div>
+            <div style="font-size:12px;color:var(--text-muted);" id="statusSub">สถานะปัจจุบัน</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">👆 บันทึกเวลา</div>
+        <div class="scan-grid">
+          <button class="scan-btn checkin" onclick="doScan('checkin')">
+            <span class="icon">🟢</span>
+            <span>เข้างาน</span>
+            <span class="last-time" id="lastCheckin">-</span>
+          </button>
+          <button class="scan-btn checkout" onclick="doScan('checkout')">
+            <span class="icon">🔴</span>
+            <span>เลิกงาน</span>
+            <span class="last-time" id="lastCheckout">-</span>
+          </button>
+          <button class="scan-btn out" onclick="doScan('out')">
+            <span class="icon">🚶</span>
+            <span>ออกข้างนอก</span>
+            <span class="last-time" id="lastOut">-</span>
+          </button>
+          <button class="scan-btn back" onclick="doScan('back')">
+            <span class="icon">🔙</span>
+            <span>กลับเข้ามา</span>
+            <span class="last-time" id="lastBack">-</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- USER: HISTORY PAGE -->
+    <div class="page" id="pageHistory">
+      <div class="card">
+        <div class="section-header">
+          <div class="card-title" style="margin:0">📋 ประวัติการบันทึกเวลา</div>
+          <select id="historyMonth" onchange="renderHistory()"></select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>วันที่</th>
+                <th>ประเภท</th>
+                <th>เวลา</th>
+                <th>สถานที่</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="historyEmpty" style="display:none">
+          <div class="empty-icon">📭</div>
+          <p>ไม่มีข้อมูลในเดือนนี้</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- USER: CALENDAR PAGE -->
+    <div class="page" id="pageCalendar">
+      <div class="card">
+        <div class="calendar-header">
+          <div class="card-title" style="margin:0">📅 ปฏิทินการหยุดงาน</div>
+          <div class="calendar-nav">
+            <button class="cal-btn" onclick="changeCalMonth(-1)">◀</button>
+            <div class="cal-month-label" id="calMonthLabel">-</div>
+            <button class="cal-btn" onclick="changeCalMonth(1)">▶</button>
+          </div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+    </div>
+
+    <!-- ADMIN: DASHBOARD -->
+    <div class="page" id="pageDashboard">
+      <div class="dash-stats">
+        <div class="stat-card present">
+          <div class="stat-num" id="statPresent">0</div>
+          <div class="stat-label">✅ มาทำงาน</div>
+        </div>
+        <div class="stat-card absent">
+          <div class="stat-num" id="statAbsent">0</div>
+          <div class="stat-label">❌ ยังไม่มา</div>
+        </div>
+        <div class="stat-card outside">
+          <div class="stat-num" id="statOutside">0</div>
+          <div class="stat-label">🚶 ออกข้างนอก</div>
+        </div>
+        <div class="stat-card total">
+          <div class="stat-num" id="statDayoff">0</div>
+          <div class="stat-label">🏖️ หยุด</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">👥 สถานะพนักงานวันนี้</div>
+        <div class="user-list" id="dashUserList"></div>
+      </div>
+    </div>
+
+    <!-- ADMIN: MANAGE USERS -->
+    <div class="page" id="pageUsers">
+      <div class="card">
+        <div class="section-header">
+          <div class="card-title" style="margin:0">👤 จัดการพนักงาน</div>
+          <button class="btn btn-primary btn-sm" onclick="openAddUser()">+ เพิ่มพนักงาน</button>
+        </div>
+        <div class="user-list" id="adminUserList"></div>
+      </div>
+    </div>
+
+    <!-- ADMIN: DAYOFF MANAGEMENT -->
+    <div class="page" id="pageDayoff">
+      <div class="card">
+        <div class="section-header">
+          <div class="card-title" style="margin:0">🏖️ จัดการวันหยุด</div>
+          <button class="btn btn-primary btn-sm" onclick="openAddDayoff()">+ กำหนดวันหยุด</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>พนักงาน</th><th>วันที่หยุด</th><th>หมายเหตุ</th><th>จัดการ</th></tr>
+            </thead>
+            <tbody id="dayoffBody"></tbody>
+          </table>
+        </div>
+        <div class="empty-state" id="dayoffEmpty" style="display:none">
+          <div class="empty-icon">🏖️</div>
+          <p>ยังไม่มีรายการวันหยุด</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ADD/EDIT USER -->
+<div class="modal-overlay" id="modalUser">
+  <div class="modal">
+    <div class="modal-title" id="modalUserTitle">👤 เพิ่มพนักงาน</div>
+    <div class="form-group">
+      <label>ชื่อ-นามสกุล</label>
+      <input type="text" id="uFullname" placeholder="เช่น นายสมชาย ใจดี">
+    </div>
+    <div class="form-group">
+      <label>ชื่อเล่น</label>
+      <input type="text" id="uNickname" placeholder="เช่น ชาย">
+    </div>
+    <div class="form-group">
+      <label>ชื่อผู้ใช้ (username)</label>
+      <input type="text" id="uUsername" placeholder="เช่น somchai">
+    </div>
+    <div class="form-group">
+      <label>รหัสผ่าน</label>
+      <input type="password" id="uPassword" placeholder="รหัสผ่านใหม่">
+    </div>
+    <div class="form-group">
+      <label>ตำแหน่ง</label>
+      <input type="text" id="uRole2" placeholder="เช่น พนักงานเสิร์ฟ">
+    </div>
+    <input type="hidden" id="uEditId">
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modalUser')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="saveUser()">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: HISTORY DETAIL (Admin) -->
+<div class="modal-overlay" id="modalUserHistory">
+  <div class="modal">
+    <div class="modal-title" id="modalHistoryTitle">📋 ประวัติพนักงาน</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>วันที่</th><th>ประเภท</th><th>เวลา</th></tr></thead>
+        <tbody id="modalHistoryBody"></tbody>
+      </table>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modalUserHistory')">ปิด</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ADD DAYOFF -->
+<div class="modal-overlay" id="modalDayoff">
+  <div class="modal">
+    <div class="modal-title" id="modalDayoffTitle">🏖️ กำหนดวันหยุด</div>
+    <div class="form-group">
+      <label>พนักงาน</label>
+      <select id="dUser" style="width:100%"></select>
+    </div>
+    <div class="form-group">
+      <label>วันที่หยุด</label>
+      <input type="date" id="dDate" style="width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:'Sarabun',sans-serif;">
+    </div>
+    <div class="form-group">
+      <label>หมายเหตุ (ถ้ามี)</label>
+      <input type="text" id="dNote" placeholder="เช่น ลากิจ, ลาป่วย, วันหยุดพักร้อน">
+    </div>
+    <input type="hidden" id="dEditId">
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('modalDayoff')">ยกเลิก</button>
+      <button class="btn btn-primary" onclick="saveDayoff()">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIG — แก้ไขค่านี้
+// ============================================================
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2LWAZ-9ToyGKSTuwfa2u5JxtztyV3g6BYW3c9oaD0Yp3F4T_FrgaeMv5RdaQDx4qQGQ/exec'; // แก้ตรงนี้
+const OFFICE_LAT = 15.7047; // ละติจูดออฟฟิศ (default: นครสวรรค์)
+const OFFICE_LNG = 100.1368; // ลองจิจูดออฟฟิศ
+const MAX_DISTANCE_M = 50; // ห่างได้ไม่เกิน 50 เมตร
+
+// ============================================================
+// LOCAL DATA STORE (Demo — replace with Apps Script calls)
+// ============================================================
+let db = {
+  users: [
+    { id: 1, username: 'admin', password: 'admin123', fullname: 'ผู้ดูแลระบบ', nickname: 'Admin', role: 'admin', position: 'ผู้จัดการ' },
+    { id: 2, username: 'user', password: '1234', fullname: 'นายสมชาย ใจดี', nickname: 'ชาย', role: 'user', position: 'พนักงานเสิร์ฟ' },
+    { id: 3, username: 'noon', password: '1234', fullname: 'นางสาวนุ่น สวยงาม', nickname: 'นุ่น', role: 'user', position: 'แคชเชียร์' },
+    { id: 4, username: 'pop', password: '1234', fullname: 'นายป๊อป เก่งมาก', nickname: 'ป๊อป', role: 'user', position: 'พนักงานครัว' },
+  ],
+  scans: [
+    { id: 1, userId: 2, type: 'checkin', timestamp: new Date(Date.now()-3600000*5).toISOString(), lat: OFFICE_LAT, lng: OFFICE_LNG },
+    { id: 2, userId: 3, type: 'checkin', timestamp: new Date(Date.now()-3600000*4).toISOString(), lat: OFFICE_LAT, lng: OFFICE_LNG },
+  ],
+  dayoffs: [
+    { id: 1, userId: 4, date: todayStr(), note: 'ลากิจ' },
+  ]
+};
+
+let currentUser = null;
+let calMonth = new Date().getMonth();
+let calYear = new Date().getFullYear();
+let currentLat = null, currentLng = null;
+
+// ============================================================
+// UTILS
+// ============================================================
+function todayStr() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function formatTime(iso) {
+  const d = new Date(iso);
+  return d.toLocaleTimeString('th-TH', {hour:'2-digit',minute:'2-digit'});
+}
+
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('th-TH', {day:'numeric',month:'short',year:'2-digit'});
+}
+
+function thaiMonth(m, y) {
+  const months = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+  return `${months[m]} ${y + 543}`;
+}
+
+function thaiShortMonth(m) {
+  const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  return months[m];
+}
+
+function dist(lat1,lng1,lat2,lng2) {
+  const R = 6371000;
+  const dLat = (lat2-lat1)*Math.PI/180;
+  const dLng = (lng2-lng1)*Math.PI/180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLng/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function showToast(msg, type='success') {
+  const icons = {success:'✅',error:'❌',warning:'⚠️',info:'ℹ️'};
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type === 'success' ? '' : type}`;
+  t.innerHTML = `<span>${icons[type]||'✅'}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(100%)'; t.style.transition = 'all 0.3s'; setTimeout(() => t.remove(), 300); }, 3000);
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+// Enter to login
+document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// ============================================================
+// AUTH
+// ============================================================
+const USE_SHEET = () => APPS_SCRIPT_URL !== 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+
+async function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginError');
+  const btn = document.querySelector('#loginPage .btn-primary');
+  if (!u || !p) { errEl.textContent = '❌ กรุณากรอกชื่อผู้ใช้และรหัสผ่าน'; errEl.style.display = 'block'; return; }
+
+  btn.textContent = '⏳ กำลังตรวจสอบ...';
+  btn.disabled = true;
+
+  let found = null;
+
+  if (USE_SHEET()) {
+    const res = await apiCall({ action: 'login', username: u, password: p });
+    if (!res.success) {
+      errEl.textContent = '❌ ' + (res.error || 'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง');
+      errEl.style.display = 'block';
+      btn.textContent = '🔐 เข้าสู่ระบบ'; btn.disabled = false;
+      return;
+    }
+    found = res.user;
+    await syncFromSheet();
+  } else {
+    found = db.users.find(x => x.username === u && x.password === p);
+    if (!found) {
+      errEl.textContent = '❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง';
+      errEl.style.display = 'block';
+      btn.textContent = '🔐 เข้าสู่ระบบ'; btn.disabled = false;
+      return;
+    }
+  }
+
+  errEl.style.display = 'none';
+  btn.textContent = '🔐 เข้าสู่ระบบ'; btn.disabled = false;
+  currentUser = found;
+  document.getElementById('topbarName').textContent = found.nickname || found.fullname;
+  document.getElementById('topbarRole').textContent = found.role === 'admin' ? '👑 Admin' : '👤 User';
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  buildNav();
+  initLocation();
+}
+
+async function syncFromSheet() {
+  try {
+    const [usersRes, scansRes, dayoffsRes] = await Promise.all([
+      apiCall({ action: 'getUsers' }),
+      apiCall({ action: 'getAllScans' }),
+      apiCall({ action: 'getDayoffs' }),
+    ]);
+    if (usersRes.success)   db.users   = usersRes.users;
+    if (scansRes.success)   db.scans   = scansRes.scans;
+    if (dayoffsRes.success) db.dayoffs = dayoffsRes.dayoffs;
+  } catch(e) { console.warn('syncFromSheet failed', e); }
+}
+
+function doLogout() {
+  currentUser = null;
+  document.getElementById('loginPage').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+}
+
+// ============================================================
+// NAV
+// ============================================================
+function buildNav() {
+  const nav = document.getElementById('navTabs');
+  nav.innerHTML = '';
+  let tabs = [];
+  if (currentUser.role === 'user') {
+    tabs = [
+      { id: 'pageScan', label: '👆 บันทึกเวลา' },
+      { id: 'pageHistory', label: '📋 ประวัติ' },
+      { id: 'pageCalendar', label: '📅 ปฏิทิน' },
+    ];
+  } else {
+    tabs = [
+      { id: 'pageDashboard', label: '📊 Dashboard' },
+      { id: 'pageUsers', label: '👥 พนักงาน' },
+      { id: 'pageDayoff', label: '🏖️ วันหยุด' },
+    ];
+  }
+  tabs.forEach((t, i) => {
+    const el = document.createElement('div');
+    el.className = 'nav-tab' + (i === 0 ? ' active' : '');
+    el.textContent = t.label;
+    el.onclick = () => switchTab(t.id);
+    nav.appendChild(el);
+  });
+  switchTab(tabs[0].id);
+}
+
+function switchTab(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  const tabs = document.querySelectorAll('.nav-tab');
+  const pages = currentUser.role === 'user'
+    ? ['pageScan','pageHistory','pageCalendar']
+    : ['pageDashboard','pageUsers','pageDayoff'];
+  const idx = pages.indexOf(pageId);
+  if (tabs[idx]) tabs[idx].classList.add('active');
+
+  // Init on switch
+  if (pageId === 'pageHistory') renderHistory();
+  if (pageId === 'pageCalendar') renderCalendar();
+  if (pageId === 'pageDashboard') renderDashboard();
+  if (pageId === 'pageUsers') renderAdminUsers();
+  if (pageId === 'pageDayoff') renderDayoffs();
+}
+
+// ============================================================
+// LOCATION
+// ============================================================
+function initLocation() {
+  if (!navigator.geolocation) {
+    document.getElementById('locationInfo').innerHTML = '⚠️ เบราว์เซอร์ไม่รองรับ GPS';
+    return;
+  }
+  navigator.geolocation.watchPosition(pos => {
+    currentLat = pos.coords.latitude;
+    currentLng = pos.coords.longitude;
+    const d = dist(currentLat, currentLng, OFFICE_LAT, OFFICE_LNG);
+    const ok = d <= MAX_DISTANCE_M;
+    document.getElementById('locationInfo').innerHTML =
+      `${ok ? '✅' : '❌'} ห่างจากออฟฟิศ <strong>${Math.round(d)} เมตร</strong> — ${ok ? 'อยู่ในรัศมี ✓' : 'อยู่นอกรัศมี (ต้องอยู่ภายใน 50 เมตร)'}`;
+    updateStatusBar();
+  }, err => {
+    document.getElementById('locationInfo').innerHTML = '⚠️ ไม่สามารถดึงตำแหน่งได้ — ' + err.message;
+  }, { enableHighAccuracy: true });
+  updateStatusBar();
+}
+
+function updateStatusBar() {
+  const today = todayStr();
+  const myScans = db.scans.filter(s => s.userId === currentUser?.id && s.timestamp.startsWith(today));
+  const lastCheckin = myScans.filter(s => s.type === 'checkin').pop();
+  const lastCheckout = myScans.filter(s => s.type === 'checkout').pop();
+  const lastOut = myScans.filter(s => s.type === 'out').pop();
+  const lastBack = myScans.filter(s => s.type === 'back').pop();
+
+  document.getElementById('lastCheckin').textContent = lastCheckin ? formatTime(lastCheckin.timestamp) : '-';
+  document.getElementById('lastCheckout').textContent = lastCheckout ? formatTime(lastCheckout.timestamp) : '-';
+  document.getElementById('lastOut').textContent = lastOut ? formatTime(lastOut.timestamp) : '-';
+  document.getElementById('lastBack').textContent = lastBack ? formatTime(lastBack.timestamp) : '-';
+
+  const dot = document.getElementById('statusDot');
+  const txt = document.getElementById('statusText');
+  const sub = document.getElementById('statusSub');
+
+  if (lastCheckout) {
+    dot.className = 'status-dot red'; txt.textContent = 'เลิกงานแล้ว'; sub.textContent = formatTime(lastCheckout.timestamp);
+  } else if (lastOut && (!lastBack || lastOut.timestamp > lastBack.timestamp)) {
+    dot.className = 'status-dot orange'; txt.textContent = 'ออกข้างนอก'; sub.textContent = formatTime(lastOut.timestamp);
+  } else if (lastCheckin) {
+    dot.className = 'status-dot green'; txt.textContent = 'เข้างานแล้ว'; sub.textContent = formatTime(lastCheckin.timestamp);
+  } else {
+    dot.className = 'status-dot gray'; txt.textContent = 'ยังไม่ได้เข้างาน'; sub.textContent = 'วันนี้';
+  }
+}
+
+// ============================================================
+// SCAN
+// ============================================================
+async function doScan(type) {
+  // Check location
+  if (currentLat !== null) {
+    const d = dist(currentLat, currentLng, OFFICE_LAT, OFFICE_LNG);
+    if (d > MAX_DISTANCE_M) {
+      showToast(`❌ คุณอยู่ห่างออฟฟิศ ${Math.round(d)} เมตร (เกิน 50 เมตร)`, 'error');
+      return;
+    }
+  }
+
+  // Show fingerprint animation
+  const labels = { checkin:'กำลังบันทึกเข้างาน...', checkout:'กำลังบันทึกเลิกงาน...', out:'กำลังบันทึกออกข้างนอก...', back:'กำลังบันทึกกลับเข้ามา...' };
+  document.getElementById('fpLabel').textContent = labels[type];
+  document.getElementById('fpOverlay').classList.add('show');
+
+  await new Promise(r => setTimeout(r, 1500));
+  document.getElementById('fpOverlay').classList.remove('show');
+
+  // Save scan
+  const scan = {
+    id: Date.now(),
+    userId: currentUser.id,
+    type,
+    timestamp: new Date().toISOString(),
+    lat: currentLat || OFFICE_LAT,
+    lng: currentLng || OFFICE_LNG,
+  };
+  db.scans.push(scan);
+
+  const typeNames = { checkin:'เข้างาน', checkout:'เลิกงาน', out:'ออกข้างนอก', back:'กลับเข้ามา' };
+  showToast(`✅ บันทึก${typeNames[type]}สำเร็จ — ${formatTime(scan.timestamp)}`);
+  updateStatusBar();
+
+  // ส่งไป Google Sheet
+  if (APPS_SCRIPT_URL !== 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec') {
+    sendToSheet(scan);
+  }
+}
+
+// ส่งข้อมูลไป Apps Script
+// APPS_SCRIPT_URL ให้ใส่ URL จาก script.google.com/.../exec ได้เลย
+// ระบบจะ encode params เป็น query string ส่งไปพร้อมกัน
+async function apiCall(params) {
+  const qs = Object.entries(params)
+    .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(typeof v === 'object' ? JSON.stringify(v) : String(v))}`)
+    .join('&');
+  const url = `${APPS_SCRIPT_URL}?${qs}`;
+  try {
+    // วิธีที่ 1: fetch ปกติ (ใช้ได้เมื่อเปิดจาก localhost หรือ HTTPS)
+    const res = await fetch(url, { redirect: 'follow' });
+    const text = await res.text();
+    try { return JSON.parse(text); } catch { return { success: false, error: 'Parse error: ' + text.slice(0,100) }; }
+  } catch(e) {
+    // วิธีที่ 2: ใช้ no-cors mode เป็น fallback (ไม่ได้ response แต่ยังบันทึกได้)
+    console.warn('fetch failed, trying no-cors:', e.message);
+    try {
+      await fetch(url, { mode: 'no-cors', redirect: 'follow' });
+      return { success: true, _note: 'no-cors mode, no response' };
+    } catch(e2) {
+      return { success: false, error: e2.message };
+    }
+  }
+}
+
+async function sendToSheet(scan) {
+  const result = await apiCall({ action: 'addScan', data: JSON.stringify(scan) });
+  if (!result.success) console.warn('Sheet sync failed:', result.error);
+}
+
+// ============================================================
+// HISTORY
+// ============================================================
+function renderHistory() {
+  const sel = document.getElementById('historyMonth');
+  const now = new Date();
+  if (!sel.options.length) {
+    for (let i = 0; i < 12; i++) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const opt = document.createElement('option');
+      opt.value = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+      opt.textContent = `${thaiShortMonth(d.getMonth())} ${d.getFullYear()+543}`;
+      sel.appendChild(opt);
+    }
+  }
+  const [y, m] = sel.value.split('-').map(Number);
+  const myScans = db.scans.filter(s => {
+    const d = new Date(s.timestamp);
+    return s.userId === currentUser.id && d.getFullYear() === y && d.getMonth()+1 === m;
+  }).sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+  const tbody = document.getElementById('historyBody');
+  const empty = document.getElementById('historyEmpty');
+
+  if (!myScans.length) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  const typeLabel = { checkin:'เข้างาน', checkout:'เลิกงาน', out:'ออกข้างนอก', back:'กลับเข้ามา' };
+  const typeBadge = { checkin:'badge-success', checkout:'badge-danger', out:'badge-warning', back:'badge-info' };
+
+  tbody.innerHTML = myScans.map(s => `
+    <tr>
+      <td>${formatDate(s.timestamp)}</td>
+      <td><span class="badge ${typeBadge[s.type]}">${typeLabel[s.type]}</span></td>
+      <td>${formatTime(s.timestamp)}</td>
+      <td style="font-size:12px;color:var(--text-muted)">ออฟฟิศ</td>
+    </tr>
+  `).join('');
+}
+
+// ============================================================
+// CALENDAR
+// ============================================================
+function changeCalMonth(d) {
+  calMonth += d;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+
+function renderCalendar() {
+  document.getElementById('calMonthLabel').textContent = thaiMonth(calMonth, calYear);
+  const grid = document.getElementById('calGrid');
+  const days = ['อา','จ','อ','พ','พฤ','ศ','ส'];
+  let html = days.map(d => `<div class="cal-day-header">${d}</div>`).join('');
+
+  const first = new Date(calYear, calMonth, 1).getDay();
+  const total = new Date(calYear, calMonth+1, 0).getDate();
+  const today = new Date();
+
+  for (let i = 0; i < first; i++) html += `<div class="cal-day empty"></div>`;
+
+  for (let d = 1; d <= total; d++) {
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = today.getFullYear()===calYear && today.getMonth()===calMonth && today.getDate()===d;
+    const isWeekend = new Date(calYear,calMonth,d).getDay() % 6 === 0;
+
+    // Who is off on this day
+    const offs = db.dayoffs.filter(x => x.date === dateStr);
+    const absentNames = offs.map(x => {
+      const u = db.users.find(u => u.id === x.userId);
+      return u ? u.nickname : '?';
+    });
+
+    const cls = ['cal-day'];
+    if (isToday) cls.push('today');
+    if (isWeekend) cls.push('weekend');
+    if (absentNames.length) cls.push('has-absent');
+
+    const numHtml = isToday
+      ? `<span class="cal-day-num" style="display:flex;align-items:center;justify-content:center;background:var(--accent);color:white;width:22px;height:22px;border-radius:50%;font-size:11px;">${d}</span>`
+      : `<span class="cal-day-num">${d}</span>`;
+
+    const namesHtml = absentNames.slice(0,3).map(n => `<div class="absent-chip">${n}</div>`).join('');
+
+    html += `<div class="${cls.join(' ')}">
+      ${numHtml}
+      <div class="absent-names">${namesHtml}</div>
+    </div>`;
+  }
+
+  grid.innerHTML = html;
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+function renderDashboard() {
+  const today = todayStr();
+  const users = db.users.filter(u => u.role === 'user');
+
+  let present = 0, absent = 0, outside = 0, dayoff = 0;
+  const rows = users.map(u => {
+    const isOff = db.dayoffs.some(d => d.userId === u.id && d.date === today);
+    const todayScans = db.scans.filter(s => s.userId === u.id && s.timestamp.startsWith(today));
+    const checkin = todayScans.find(s => s.type === 'checkin');
+    const checkout = todayScans.filter(s => s.type === 'checkout').pop();
+    const lastOut = todayScans.filter(s => s.type === 'out').pop();
+    const lastBack = todayScans.filter(s => s.type === 'back').pop();
+
+    let status, badge, dot;
+    if (isOff) {
+      status = 'หยุด'; badge = 'badge-gray'; dot = 'gray'; dayoff++;
+    } else if (checkout) {
+      status = `เลิกงาน ${formatTime(checkout.timestamp)}`; badge = 'badge-danger'; dot = 'red'; present++;
+    } else if (lastOut && (!lastBack || lastOut.timestamp > lastBack.timestamp)) {
+      status = `ออกข้างนอก ${formatTime(lastOut.timestamp)}`; badge = 'badge-warning'; dot = 'orange'; outside++;
+    } else if (checkin) {
+      status = `เข้างาน ${formatTime(checkin.timestamp)}`; badge = 'badge-success'; dot = 'green'; present++;
+    } else {
+      status = 'ยังไม่มา'; badge = 'badge-gray'; dot = 'gray'; absent++;
+    }
+
+    return { u, status, badge, dot };
+  });
+
+  document.getElementById('statPresent').textContent = present;
+  document.getElementById('statAbsent').textContent = absent;
+  document.getElementById('statOutside').textContent = outside;
+  document.getElementById('statDayoff').textContent = dayoff;
+
+  document.getElementById('dashUserList').innerHTML = rows.map(r => `
+    <div class="user-row">
+      <div class="avatar">${r.u.nickname[0]}</div>
+      <div class="user-info">
+        <div class="name">${r.u.nickname}</div>
+        <div class="sub">${r.u.position}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="badge ${r.badge}">${r.status}</span>
+        <div class="status-dot ${r.dot}"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ============================================================
+// ADMIN: USERS
+// ============================================================
+function renderAdminUsers() {
+  const users = db.users.filter(u => u.role === 'user');
+  document.getElementById('adminUserList').innerHTML = users.map(u => `
+    <div class="user-row">
+      <div class="avatar">${u.nickname[0]}</div>
+      <div class="user-info">
+        <div class="name">${u.fullname} <span style="font-size:12px;color:var(--text-muted)">(${u.nickname})</span></div>
+        <div class="sub">@${u.username} · ${u.position}</div>
+      </div>
+      <div class="user-actions">
+        <button class="btn btn-info btn-sm" onclick="viewUserHistory(${u.id})">📋 ประวัติ</button>
+        <button class="btn btn-secondary btn-sm" onclick="openEditUser(${u.id})">✏️ แก้ไข</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openAddUser() {
+  document.getElementById('modalUserTitle').textContent = '👤 เพิ่มพนักงาน';
+  document.getElementById('uFullname').value = '';
+  document.getElementById('uNickname').value = '';
+  document.getElementById('uUsername').value = '';
+  document.getElementById('uPassword').value = '';
+  document.getElementById('uRole2').value = '';
+  document.getElementById('uEditId').value = '';
+  openModal('modalUser');
+}
+
+function openEditUser(id) {
+  const u = db.users.find(x => x.id === id);
+  if (!u) return;
+  document.getElementById('modalUserTitle').textContent = '✏️ แก้ไขพนักงาน';
+  document.getElementById('uFullname').value = u.fullname;
+  document.getElementById('uNickname').value = u.nickname;
+  document.getElementById('uUsername').value = u.username;
+  document.getElementById('uPassword').value = '';
+  document.getElementById('uRole2').value = u.position;
+  document.getElementById('uEditId').value = id;
+  openModal('modalUser');
+}
+
+async function saveUser() {
+  const id = document.getElementById('uEditId').value;
+  const data = {
+    fullname: document.getElementById('uFullname').value.trim(),
+    nickname: document.getElementById('uNickname').value.trim(),
+    username: document.getElementById('uUsername').value.trim(),
+    position: document.getElementById('uRole2').value.trim(),
+    role: 'user',
+  };
+  const pass = document.getElementById('uPassword').value;
+  if (!data.fullname || !data.username) { showToast('กรุณากรอกข้อมูลให้ครบ', 'error'); return; }
+
+  if (id) {
+    const payload = { ...data, id };
+    if (pass) payload.password = pass;
+    if (USE_SHEET()) {
+      const r = await apiCall({ action: 'editUser', data: JSON.stringify(payload) });
+      if (!r.success) { showToast('❌ ' + r.error, 'error'); return; }
+    }
+    const u = db.users.find(x => String(x.id) === String(id));
+    if (u) { Object.assign(u, data); if (pass) u.password = pass; }
+    showToast('✅ แก้ไขข้อมูลสำเร็จ');
+  } else {
+    if (!pass) { showToast('กรุณากำหนดรหัสผ่าน', 'error'); return; }
+    const newUser = { id: Date.now(), ...data, password: pass };
+    if (USE_SHEET()) {
+      const r = await apiCall({ action: 'addUser', data: JSON.stringify(newUser) });
+      if (!r.success) { showToast('❌ ' + r.error, 'error'); return; }
+      if (r.id) newUser.id = r.id;
+    }
+    db.users.push(newUser);
+    showToast('✅ เพิ่มพนักงานสำเร็จ');
+  }
+  closeModal('modalUser');
+  renderAdminUsers();
+}
+
+async function deleteUser(id) {
+  if (!confirm('ต้องการลบพนักงานนี้?')) return;
+  if (USE_SHEET()) {
+    const r = await apiCall({ action: 'deleteUser', id });
+    if (!r.success) { showToast('❌ ' + r.error, 'error'); return; }
+  }
+  db.users = db.users.filter(u => String(u.id) !== String(id));
+  db.scans = db.scans.filter(s => String(s.userId) !== String(id));
+  db.dayoffs = db.dayoffs.filter(d => String(d.userId) !== String(id));
+  showToast('ลบพนักงานแล้ว', 'warning');
+  renderAdminUsers();
+}
+
+function viewUserHistory(userId) {
+  const u = db.users.find(x => x.id === userId);
+  document.getElementById('modalHistoryTitle').textContent = `📋 ประวัติ — ${u?.nickname || '?'}`;
+  const scans = db.scans.filter(s => s.userId === userId).sort((a,b) => new Date(b.timestamp)-new Date(a.timestamp)).slice(0,30);
+  const typeLabel = { checkin:'เข้างาน', checkout:'เลิกงาน', out:'ออกข้างนอก', back:'กลับเข้ามา' };
+  const typeBadge = { checkin:'badge-success', checkout:'badge-danger', out:'badge-warning', back:'badge-info' };
+  document.getElementById('modalHistoryBody').innerHTML = scans.length
+    ? scans.map(s => `<tr><td>${formatDate(s.timestamp)}</td><td><span class="badge ${typeBadge[s.type]}">${typeLabel[s.type]}</span></td><td>${formatTime(s.timestamp)}</td></tr>`).join('')
+    : '<tr><td colspan="3" style="text-align:center;color:var(--text-muted)">ไม่มีประวัติ</td></tr>';
+  openModal('modalUserHistory');
+}
+
+// ============================================================
+// ADMIN: DAYOFF
+// ============================================================
+function renderDayoffs() {
+  const offs = db.dayoffs.sort((a,b) => new Date(b.date)-new Date(a.date));
+  const empty = document.getElementById('dayoffEmpty');
+  if (!offs.length) { document.getElementById('dayoffBody').innerHTML = ''; empty.style.display='block'; return; }
+  empty.style.display = 'none';
+  document.getElementById('dayoffBody').innerHTML = offs.map(d => {
+    const u = db.users.find(x => x.id === d.userId);
+    const dateDisplay = new Date(d.date).toLocaleDateString('th-TH', {day:'numeric',month:'long',year:'2-digit'});
+    return `<tr>
+      <td><strong>${u?.nickname || '?'}</strong><br><span style="font-size:12px;color:var(--text-muted)">${u?.fullname||''}</span></td>
+      <td>${dateDisplay}</td>
+      <td>${d.note || '-'}</td>
+      <td><button class="btn btn-secondary btn-sm" onclick="openEditDayoff(${d.id})">✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteDayoff(${d.id})">🗑️</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function openAddDayoff() {
+  document.getElementById('modalDayoffTitle').textContent = '🏖️ กำหนดวันหยุด';
+  const sel = document.getElementById('dUser');
+  sel.innerHTML = db.users.filter(u=>u.role==='user').map(u => `<option value="${u.id}">${u.nickname} — ${u.fullname}</option>`).join('');
+  document.getElementById('dDate').value = todayStr();
+  document.getElementById('dNote').value = '';
+  document.getElementById('dEditId').value = '';
+  openModal('modalDayoff');
+}
+
+function openEditDayoff(id) {
+  const d = db.dayoffs.find(x => x.id === id);
+  if (!d) return;
+  document.getElementById('modalDayoffTitle').textContent = '✏️ แก้ไขวันหยุด';
+  const sel = document.getElementById('dUser');
+  sel.innerHTML = db.users.filter(u=>u.role==='user').map(u => `<option value="${u.id}" ${u.id===d.userId?'selected':''}>${u.nickname} — ${u.fullname}</option>`).join('');
+  document.getElementById('dDate').value = d.date;
+  document.getElementById('dNote').value = d.note || '';
+  document.getElementById('dEditId').value = id;
+  openModal('modalDayoff');
+}
+
+async function saveDayoff() {
+  const id = document.getElementById('dEditId').value;
+  const userId = document.getElementById('dUser').value;
+  const date = document.getElementById('dDate').value;
+  const note = document.getElementById('dNote').value.trim();
+  if (!date) { showToast('กรุณาเลือกวันที่', 'error'); return; }
+
+  if (id) {
+    const payload = { id, userId, date, note };
+    if (USE_SHEET()) {
+      const r = await apiCall({ action: 'editDayoff', data: JSON.stringify(payload) });
+      if (!r.success) { showToast('❌ ' + r.error, 'error'); return; }
+    }
+    const d = db.dayoffs.find(x => String(x.id) === String(id));
+    if (d) { d.userId = userId; d.date = date; d.note = note; }
+    showToast('✅ แก้ไขวันหยุดสำเร็จ');
+  } else {
+    const newDayoff = { id: Date.now(), userId, date, note };
+    if (USE_SHEET()) {
+      const r = await apiCall({ action: 'addDayoff', data: JSON.stringify(newDayoff) });
+      if (!r.success) { showToast('❌ ' + r.error, 'error'); return; }
+      if (r.id) newDayoff.id = r.id;
+    }
+    db.dayoffs.push(newDayoff);
+    showToast('✅ บันทึกวันหยุดสำเร็จ');
+  }
+  closeModal('modalDayoff');
+  renderDayoffs();
+}
+
+async function deleteDayoff(id) {
+  if (!confirm('ต้องการลบวันหยุดนี้?')) return;
+  if (USE_SHEET()) {
+    const r = await apiCall({ action: 'deleteDayoff', id });
+    if (!r.success) { showToast('❌ ' + r.error, 'error'); return; }
+  }
+  db.dayoffs = db.dayoffs.filter(d => String(d.id) !== String(id));
+  showToast('ลบวันหยุดแล้ว', 'warning');
+  renderDayoffs();
+}
+</script>
+</body>
+</html>
