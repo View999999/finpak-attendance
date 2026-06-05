@@ -2,7 +2,10 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>ฟินปาก หมูกระทะ นครสวรรค์</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=Kanit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -12,18 +15,18 @@
     --primary-light: #ff7a00;
     --accent: #e63946;
     --accent-light: #ff4d5e;
-    --bg: #0a0a0a;
-    --surface: #141414;
-    --surface2: #1a1a1a;
+    --bg: #2b2b2b;
+    --surface: #323232;
+    --surface2: #383838;
     --text: #f0ece4;
-    --text-muted: #8a8278;
-    --border: #2a2520;
+    --text-muted: #b0aca6;
+    --border: #444444;
     --success: #2ecc71;
     --warning: #e85d04;
     --danger: #e63946;
     --info: #3498db;
-    --shadow: 0 4px 24px rgba(232,93,4,0.15);
-    --shadow-lg: 0 8px 40px rgba(232,93,4,0.25);
+    --shadow: 0 4px 24px rgba(0,0,0,0.25);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.35);
     --radius: 16px;
     --radius-sm: 10px;
     --gold: #c9a84c;
@@ -37,7 +40,9 @@
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
+    min-height: -webkit-fill-available;
     overflow-x: hidden;
+    padding-bottom: env(safe-area-inset-bottom);
   }
 
   /* ===== LOGIN PAGE ===== */
@@ -46,7 +51,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: radial-gradient(ellipse at top, #1a0f00 0%, #0a0a0a 60%);
+    background: radial-gradient(ellipse at top, #2a1800 0%, #2b2b2b 70%);
     position: relative;
     overflow: hidden;
   }
@@ -70,12 +75,12 @@
   }
 
   .login-card {
-    background: #141414;
+    background: #383838;
     border-radius: 24px;
     padding: 48px 40px;
     width: 100%;
     max-width: 400px;
-    box-shadow: 0 20px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(232,93,4,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(232,93,4,0.3), inset 0 1px 0 rgba(255,255,255,0.05);
     position: relative;
     z-index: 1;
     animation: slideUp 0.5s ease;
@@ -118,7 +123,7 @@
     display: block;
     font-size: 13px;
     font-weight: 600;
-    color: var(--text-muted);
+    color: var(--text);
     margin-bottom: 6px;
     letter-spacing: 0.5px;
   }
@@ -126,20 +131,20 @@
   .form-group input {
     width: 100%;
     padding: 13px 16px;
-    border: 1px solid #2a2520;
+    border: 1px solid #555;
     border-radius: var(--radius-sm);
     font-family: 'Sarabun', sans-serif;
     font-size: 15px;
-    color: var(--text);
-    background: #1f1a14;
+    color: #1a1a1a;
+    background: #ffffff;
     transition: all 0.2s;
     outline: none;
   }
 
   .form-group input:focus {
     border-color: var(--primary);
-    background: #241d13;
-    box-shadow: 0 0 0 3px rgba(232,93,4,0.15);
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(232,93,4,0.2);
   }
 
   .btn {
@@ -156,6 +161,8 @@
     cursor: pointer;
     transition: all 0.2s;
     text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   .btn-primary {
@@ -195,8 +202,8 @@
 
   /* TOPBAR */
   .topbar {
-    background: #0f0f0f;
-    border-bottom: 1px solid rgba(232,93,4,0.3);
+    background: #222222;
+    border-bottom: 1px solid rgba(232,93,4,0.4);
     color: white;
     padding: 0 24px;
     height: 60px;
@@ -249,8 +256,8 @@
 
   /* NAV TABS */
   .nav-tabs {
-    background: #0f0f0f;
-    border-bottom: 1px solid #2a2520;
+    background: #282828;
+    border-bottom: 1px solid var(--border);
     display: flex;
     padding: 0 24px;
     gap: 4px;
@@ -291,12 +298,12 @@
 
   /* CARDS */
   .card {
-    background: #141414;
+    background: var(--surface);
     border-radius: var(--radius);
     padding: 24px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    box-shadow: var(--shadow);
     margin-bottom: 20px;
-    border: 1px solid #2a2520;
+    border: 1px solid var(--border);
   }
 
   .card-title {
@@ -336,6 +343,9 @@
     transition: all 0.2s;
     position: relative;
     overflow: hidden;
+    min-height: 130px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 
   .scan-btn .icon { font-size: 36px; }
@@ -388,7 +398,7 @@
   }
 
   th {
-    background: #1a1a1a;
+    background: var(--surface2);
     color: #c9a84c;
     font-weight: 600;
     padding: 10px 14px;
@@ -404,7 +414,7 @@
     vertical-align: middle;
   }
 
-  tr:hover td { background: #fef9f5; }
+  tr:hover td { background: rgba(232,93,4,0.08); }
 
   .badge {
     display: inline-block;
@@ -466,7 +476,7 @@
     padding: 8px 4px;
     font-size: 12px;
     font-weight: 700;
-    color: var(--text-muted);
+    color: var(--gold);
     letter-spacing: 0.5px;
   }
 
@@ -474,7 +484,7 @@
     border-radius: 10px;
     padding: 6px 4px;
     min-height: 64px;
-    background: white;
+    background: var(--surface);
     border: 1px solid var(--border);
     position: relative;
     transition: all 0.2s;
@@ -484,14 +494,14 @@
   .cal-day:hover { border-color: var(--primary); z-index: 1; }
 
   .cal-day.empty { background: transparent; border-color: transparent; }
-  .cal-day.today { border-color: var(--accent); background: #fffbf0; }
-  .cal-day.weekend { background: #fdf5f5; }
-  .cal-day.has-absent { background: #fff0f0; border-color: #ffcccc; }
+  .cal-day.today { border-color: var(--gold); background: rgba(201,168,76,0.15); }
+  .cal-day.weekend { background: rgba(232,93,4,0.08); }
+  .cal-day.has-absent { background: rgba(230,57,70,0.2); border-color: #e63946; }
 
   .cal-day-num {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
     margin-bottom: 4px;
     display: block;
   }
@@ -515,15 +525,15 @@
   }
 
   .absent-chip {
-    background: #fde8e8;
-    color: #c0392b;
-    font-size: 9px;
-    padding: 2px 5px;
+    background: #e63946;
+    color: #ffffff;
+    font-size: 10px;
+    padding: 2px 6px;
     border-radius: 4px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   /* DASHBOARD */
@@ -535,12 +545,12 @@
   }
 
   .stat-card {
-    background: #141414;
+    background: var(--surface);
     border-radius: var(--radius);
     padding: 20px;
     text-align: center;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-    border: 1px solid #2a2520;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
   }
 
   .stat-card .stat-num {
@@ -561,8 +571,8 @@
   .user-list { display: flex; flex-direction: column; gap: 10px; }
 
   .user-row {
-    background: #1a1a1a;
-    border: 1px solid #2a2520;
+    background: var(--surface2);
+    border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     padding: 14px 18px;
     display: flex;
@@ -611,7 +621,7 @@
   .modal-overlay.open { opacity: 1; pointer-events: all; }
 
   .modal {
-    background: #141414;
+    background: var(--surface);
     border-radius: var(--radius);
     padding: 32px;
     width: 100%;
@@ -698,10 +708,11 @@
   }
 
   .toast {
-    background: white;
+    background: #2e2e2e;
+    color: #f0ece4;
     border-radius: 12px;
     padding: 14px 18px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -725,12 +736,12 @@
   /* SELECT */
   select {
     padding: 10px 14px;
-    border: 2px solid var(--border);
+    border: 2px solid #555;
     border-radius: var(--radius-sm);
     font-family: 'Sarabun', sans-serif;
     font-size: 14px;
-    color: var(--text);
-    background: white;
+    color: #1a1a1a;
+    background: #ffffff;
     cursor: pointer;
     outline: none;
     transition: border 0.2s;
@@ -783,7 +794,7 @@
   }
 
   .config-note {
-    background: #1a1200;
+    background: #2e2200;
     border: 1px dashed #c9a84c;
     border-radius: 8px;
     padding: 12px 16px;
@@ -792,13 +803,55 @@
     margin-bottom: 20px;
   }
 
-  @media (max-width: 600px) {
-    .scan-grid { grid-template-columns: 1fr 1fr; }
-    .content { padding: 16px; }
-    .login-card { padding: 32px 24px; }
-    .dash-stats { grid-template-columns: repeat(2, 1fr); }
-    .modal { padding: 24px 18px; }
-    .topbar-brand span:last-child { display: none; }
+  /* ===== RESPONSIVE MOBILE ===== */
+  @media (max-width: 768px) {
+    .content { padding: 12px; }
+    .login-card { padding: 32px 20px; margin: 16px; }
+    .scan-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .scan-btn { padding: 22px 12px; font-size: 15px; }
+    .scan-btn .icon { font-size: 30px; }
+    .dash-stats { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .stat-card { padding: 16px 10px; }
+    .stat-card .stat-num { font-size: 28px; }
+    .card { padding: 16px; border-radius: 12px; }
+    .modal { padding: 20px 16px; margin: 12px; }
+    .modal-title { font-size: 16px; }
+    .topbar { padding: 0 14px; height: 54px; }
+    .topbar-brand { font-size: 14px; }
+    .topbar-brand img { width: 30px; height: 30px; }
+    .topbar-user { gap: 8px; font-size: 13px; }
+    .user-badge { padding: 3px 8px; font-size: 11px; }
+    .btn-logout { padding: 5px 10px; font-size: 12px; }
+    .nav-tabs { padding: 0 8px; }
+    .nav-tab { padding: 12px 12px; font-size: 13px; }
+    .cal-grid { gap: 2px; }
+    .cal-day { min-height: 52px; padding: 4px 2px; border-radius: 6px; }
+    .cal-day-num { font-size: 12px; }
+    .cal-day-header { font-size: 11px; padding: 6px 2px; }
+    .absent-chip { font-size: 9px; padding: 1px 3px; }
+    .cal-month-label { font-size: 15px; min-width: 120px; }
+    table { font-size: 13px; }
+    th, td { padding: 8px 8px; }
+    .user-row { padding: 10px 12px; flex-wrap: wrap; gap: 8px; }
+    .user-actions { gap: 6px; }
+    .btn-sm { padding: 6px 10px; font-size: 12px; }
+    .section-header { flex-direction: column; align-items: flex-start; }
+    .login-logo h1 { font-size: 18px; }
+    .login-logo img { width: 90px; height: 90px; }
+    .card-title { font-size: 15px; }
+    .status-bar { padding: 10px 12px; }
+    .location-info { font-size: 12px; padding: 8px 12px; }
+    .form-group input, select { font-size: 16px !important; } /* prevent zoom on iOS */
+  }
+
+  @media (max-width: 400px) {
+    .scan-btn { padding: 18px 8px; font-size: 13px; }
+    .scan-btn .icon { font-size: 26px; }
+    .nav-tab { padding: 10px 8px; font-size: 12px; gap: 4px; }
+    .stat-card .stat-num { font-size: 24px; }
+    .cal-day { min-height: 44px; }
+    .topbar-brand span { display: none; }
+    .content { padding: 8px; }
   }
 </style>
 </head>
@@ -864,10 +917,6 @@
   <div class="content">
     <!-- USER: SCAN PAGE -->
     <div class="page" id="pageScan">
-      <div class="config-note">
-        ⚙️ <strong>หมายเหตุ:</strong> แก้ไข <code>APPS_SCRIPT_URL</code> และ <code>OFFICE_LAT/LNG</code> ในโค้ดเพื่อเชื่อมต่อ Google Sheet จริง
-      </div>
-
       <div class="card">
         <div class="card-title">📍 ตำแหน่งปัจจุบัน</div>
         <div class="location-info" id="locationInfo">
@@ -921,9 +970,10 @@
             <thead>
               <tr>
                 <th>วันที่</th>
-                <th>ประเภท</th>
-                <th>เวลา</th>
-                <th>สถานที่</th>
+                <th style="text-align:center;color:#2ecc71;">เข้างาน</th>
+                <th style="text-align:center;color:#e85d04;">ออกข้างนอก</th>
+                <th style="text-align:center;color:#3498db;">กลับเข้ามา</th>
+                <th style="text-align:center;color:#e63946;">เลิกงาน</th>
               </tr>
             </thead>
             <tbody id="historyBody"></tbody>
@@ -1071,7 +1121,7 @@
     </div>
     <div class="form-group">
       <label>วันที่หยุด</label>
-      <input type="date" id="dDate" style="width:100%;padding:10px 14px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:'Sarabun',sans-serif;">
+      <input type="date" id="dDate" style="width:100%;padding:10px 14px;border:2px solid #555;border-radius:var(--radius-sm);font-size:14px;font-family:'Sarabun',sans-serif;color:#1a1a1a;background:#ffffff;outline:none;">
     </div>
     <div class="form-group">
       <label>หมายเหตุ (ถ้ามี)</label>
@@ -1090,8 +1140,8 @@
 // CONFIG — แก้ไขค่านี้
 // ============================================================
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2LWAZ-9ToyGKSTuwfa2u5JxtztyV3g6BYW3c9oaD0Yp3F4T_FrgaeMv5RdaQDx4qQGQ/exec'; // แก้ตรงนี้
-const OFFICE_LAT = 15.7047; // ละติจูดออฟฟิศ (default: นครสวรรค์)
-const OFFICE_LNG = 100.1368; // ลองจิจูดออฟฟิศ
+const OFFICE_LAT = 15.690170280773733; // ละติจูดออฟฟิศ
+const OFFICE_LNG = 100.10287369999999; // ลองจิจูดออฟฟิศ // ลองจิจูดออฟฟิศ
 const MAX_DISTANCE_M = 50; // ห่างได้ไม่เกิน 50 เมตร
 
 // ============================================================
@@ -1246,14 +1296,17 @@ async function doLogin() {
 
 async function syncFromSheet() {
   try {
+    const now = new Date();
+    const month = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
     const [usersRes, scansRes, dayoffsRes] = await Promise.all([
       apiCall({ action: 'getUsers' }),
-      apiCall({ action: 'getAllScans' }),
+      apiCall({ action: 'getScans', userId: '', month }),
       apiCall({ action: 'getDayoffs' }),
     ]);
     if (usersRes.success)   db.users   = usersRes.users;
     if (scansRes.success)   db.scans   = scansRes.scans;
     if (dayoffsRes.success) db.dayoffs = dayoffsRes.dayoffs;
+    console.log('Synced:', db.users.length, 'users,', db.scans.length, 'scans,', db.dayoffs.length, 'dayoffs');
   } catch(e) { console.warn('syncFromSheet failed', e); }
 }
 
@@ -1308,10 +1361,50 @@ function switchTab(pageId) {
 
   // Init on switch
   if (pageId === 'pageHistory') renderHistory();
-  if (pageId === 'pageCalendar') renderCalendar();
-  if (pageId === 'pageDashboard') renderDashboard();
+  if (pageId === 'pageCalendar') syncAndRenderCalendar();
+  if (pageId === 'pageDashboard') syncAndRenderDashboard();
   if (pageId === 'pageUsers') renderAdminUsers();
-  if (pageId === 'pageDayoff') renderDayoffs();
+  if (pageId === 'pageDayoff') syncAndRenderDayoffs();
+}
+
+async function syncAndRenderCalendar() {
+  try {
+    if (USE_SHEET()) {
+      const r = await apiCall({ action: 'getDayoffs' });
+      if (r.success) db.dayoffs = r.dayoffs;
+    }
+  } catch(e) {}
+  renderCalendar();
+}
+
+async function syncAndRenderDashboard() {
+  try {
+    if (USE_SHEET()) {
+      const [usersRes, scansRes, dayoffsRes] = await Promise.all([
+        apiCall({ action: 'getUsers' }),
+        apiCall({ action: 'getAllScans', date: todayStr() }),
+        apiCall({ action: 'getDayoffs' }),
+      ]);
+      if (usersRes.success) db.users = usersRes.users;
+      if (scansRes.success) db.scans = [...db.scans.filter(s => !s.timestamp.startsWith(todayStr())), ...scansRes.scans];
+      if (dayoffsRes.success) db.dayoffs = dayoffsRes.dayoffs;
+    }
+  } catch(e) {}
+  renderDashboard();
+}
+
+async function syncAndRenderDayoffs() {
+  try {
+    if (USE_SHEET()) {
+      const [usersRes, dayoffsRes] = await Promise.all([
+        apiCall({ action: 'getUsers' }),
+        apiCall({ action: 'getDayoffs' }),
+      ]);
+      if (usersRes.success) db.users = usersRes.users;
+      if (dayoffsRes.success) db.dayoffs = dayoffsRes.dayoffs;
+    }
+  } catch(e) {}
+  renderDayoffs();
 }
 
 // ============================================================
@@ -1328,11 +1421,17 @@ function initLocation() {
     const d = dist(currentLat, currentLng, OFFICE_LAT, OFFICE_LNG);
     const ok = d <= MAX_DISTANCE_M;
     document.getElementById('locationInfo').innerHTML =
-      `${ok ? '✅' : '❌'} ห่างจากออฟฟิศ <strong>${Math.round(d)} เมตร</strong> — ${ok ? 'อยู่ในรัศมี ✓' : 'อยู่นอกรัศมี (ต้องอยู่ภายใน 50 เมตร)'}`;
+      `${ok ? '✅' : '❌'} ห่างจากออฟฟิศ <strong>${Math.round(d)} เมตร</strong> — ${ok ? '<span style="color:#2ecc71">อยู่ในรัศมี สามารถบันทึกได้ ✓</span>' : '<span style="color:#e63946">อยู่นอกรัศมี ไม่สามารถบันทึกได้</span>'}`;
     updateStatusBar();
   }, err => {
-    document.getElementById('locationInfo').innerHTML = '⚠️ ไม่สามารถดึงตำแหน่งได้ — ' + err.message;
-  }, { enableHighAccuracy: true });
+    currentLat = null;
+    currentLng = null;
+    let msg = '❌ <strong>ไม่สามารถดึงตำแหน่งได้</strong>';
+    if (err.code === 1) msg = '🔒 <strong>ถูกปฏิเสธการเข้าถึง GPS</strong> — กรุณาอนุญาตใน Settings แล้ว Refresh';
+    if (err.code === 2) msg = '📡 <strong>ไม่พบสัญญาณ GPS</strong> — กรุณาออกไปที่โล่งแจ้ง';
+    if (err.code === 3) msg = '⏱️ <strong>GPS หมดเวลา</strong> — กรุณาลองใหม่';
+    document.getElementById('locationInfo').innerHTML = msg + '<br><span style="font-size:12px;color:var(--text-muted)">⚠️ ต้องเปิด GPS และอยู่ในรัศมี 50 เมตร จึงจะบันทึกได้</span>';
+  }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 });
   updateStatusBar();
 }
 
@@ -1368,13 +1467,17 @@ function updateStatusBar() {
 // SCAN
 // ============================================================
 async function doScan(type) {
-  // Check location
-  if (currentLat !== null) {
-    const d = dist(currentLat, currentLng, OFFICE_LAT, OFFICE_LNG);
-    if (d > MAX_DISTANCE_M) {
-      showToast(`❌ คุณอยู่ห่างออฟฟิศ ${Math.round(d)} เมตร (เกิน 50 เมตร)`, 'error');
-      return;
-    }
+  // ต้องเปิด GPS เท่านั้น — ถ้าไม่มีพิกัดห้ามบันทึก
+  if (currentLat === null) {
+    showToast('❌ กรุณาเปิด GPS และอนุญาตการเข้าถึงตำแหน่ง', 'error');
+    document.getElementById('locationInfo').innerHTML = '❌ <strong>กรุณาเปิด GPS</strong> และอนุญาตการเข้าถึงตำแหน่งในเบราว์เซอร์';
+    return;
+  }
+  // ต้องอยู่ในระยะ 50 เมตร
+  const distM = dist(currentLat, currentLng, OFFICE_LAT, OFFICE_LNG);
+  if (distM > MAX_DISTANCE_M) {
+    showToast(`❌ อยู่ห่างออฟฟิศ ${Math.round(distM)} เมตร — ต้องอยู่ภายใน ${MAX_DISTANCE_M} เมตร`, 'error');
+    return;
   }
 
   // Show fingerprint animation
@@ -1454,8 +1557,8 @@ function renderHistory() {
   const [y, m] = sel.value.split('-').map(Number);
   const myScans = db.scans.filter(s => {
     const d = new Date(s.timestamp);
-    return s.userId === currentUser.id && d.getFullYear() === y && d.getMonth()+1 === m;
-  }).sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+    return String(s.userId) === String(currentUser.id) && d.getFullYear() === y && d.getMonth()+1 === m;
+  });
 
   const tbody = document.getElementById('historyBody');
   const empty = document.getElementById('historyEmpty');
@@ -1467,17 +1570,45 @@ function renderHistory() {
   }
   empty.style.display = 'none';
 
-  const typeLabel = { checkin:'เข้างาน', checkout:'เลิกงาน', out:'ออกข้างนอก', back:'กลับเข้ามา' };
-  const typeBadge = { checkin:'badge-success', checkout:'badge-danger', out:'badge-warning', back:'badge-info' };
+  // จัดกลุ่มตามวันที่ แล้วหาเวลาล่าสุดของแต่ละ type
+  const byDate = {};
+  myScans.forEach(s => {
+    const dateKey = s.timestamp.split('T')[0];
+    if (!byDate[dateKey]) byDate[dateKey] = { checkin:[], checkout:[], out:[], back:[] };
+    if (byDate[dateKey][s.type]) byDate[dateKey][s.type].push(s.timestamp);
+  });
 
-  tbody.innerHTML = myScans.map(s => `
-    <tr>
-      <td>${formatDate(s.timestamp)}</td>
-      <td><span class="badge ${typeBadge[s.type]}">${typeLabel[s.type]}</span></td>
-      <td>${formatTime(s.timestamp)}</td>
-      <td style="font-size:12px;color:var(--text-muted)">ออฟฟิศ</td>
-    </tr>
-  `).join('');
+  const sortedDates = Object.keys(byDate).sort((a,b) => b.localeCompare(a));
+
+  const thaiDayShort = ['อา','จ','อ','พ','พฤ','ศ','ส'];
+
+  tbody.innerHTML = sortedDates.map(dateKey => {
+    const day = byDate[dateKey];
+    // เอาเวลาล่าสุดของแต่ละ type
+    const lastCheckin  = day.checkin.sort().pop();
+    const lastCheckout = day.checkout.sort().pop();
+    const lastOut      = day.out.sort().pop();
+    const lastBack     = day.back.sort().pop();
+
+    const d = new Date(dateKey);
+    const dayName = thaiDayShort[d.getDay()];
+    const dateDisplay = `${d.getDate()} ${['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'][d.getMonth()]}`;
+
+    const cell = (time, color) => time
+      ? `<td style="text-align:center;font-size:15px;font-weight:600;color:${color};">${formatTime(time)}</td>`
+      : `<td style="text-align:center;color:var(--text-muted);font-size:13px;">—</td>`;
+
+    return `<tr>
+      <td style="white-space:nowrap;">
+        <span style="font-size:15px;font-weight:700;">${dateDisplay}</span>
+        <span style="font-size:11px;color:var(--text-muted);margin-left:4px;">(${dayName})</span>
+      </td>
+      ${cell(lastCheckin,  '#2ecc71')}
+      ${cell(lastOut,      '#e85d04')}
+      ${cell(lastBack,     '#3498db')}
+      ${cell(lastCheckout, '#e63946')}
+    </tr>`;
+  }).join('');
 }
 
 // ============================================================
@@ -1509,8 +1640,9 @@ function renderCalendar() {
 
     // Who is off on this day
     const offs = db.dayoffs.filter(x => x.date === dateStr);
+    // offs ใช้ String comparison กับ users
     const absentNames = offs.map(x => {
-      const u = db.users.find(u => u.id === x.userId);
+      const u = db.users.find(u => String(u.id) === String(x.userId));
       return u ? u.nickname : '?';
     });
 
@@ -1543,8 +1675,8 @@ function renderDashboard() {
 
   let present = 0, absent = 0, outside = 0, dayoff = 0;
   const rows = users.map(u => {
-    const isOff = db.dayoffs.some(d => d.userId === u.id && d.date === today);
-    const todayScans = db.scans.filter(s => s.userId === u.id && s.timestamp.startsWith(today));
+    const isOff = db.dayoffs.some(d => String(d.userId) === String(u.id) && d.date === today);
+    const todayScans = db.scans.filter(s => String(s.userId) === String(u.id) && s.timestamp.startsWith(today));
     const checkin = todayScans.find(s => s.type === 'checkin');
     const checkout = todayScans.filter(s => s.type === 'checkout').pop();
     const lastOut = todayScans.filter(s => s.type === 'out').pop();
@@ -1619,7 +1751,7 @@ function openAddUser() {
 }
 
 function openEditUser(id) {
-  const u = db.users.find(x => x.id === id);
+  const u = db.users.find(x => String(x.id) === String(id));
   if (!u) return;
   document.getElementById('modalUserTitle').textContent = '✏️ แก้ไขพนักงาน';
   document.getElementById('uFullname').value = u.fullname;
@@ -1682,9 +1814,9 @@ async function deleteUser(id) {
 }
 
 function viewUserHistory(userId) {
-  const u = db.users.find(x => x.id === userId);
+  const u = db.users.find(x => String(x.id) === String(userId));
   document.getElementById('modalHistoryTitle').textContent = `📋 ประวัติ — ${u?.nickname || '?'}`;
-  const scans = db.scans.filter(s => s.userId === userId).sort((a,b) => new Date(b.timestamp)-new Date(a.timestamp)).slice(0,30);
+  const scans = db.scans.filter(s => String(s.userId) === String(userId)).sort((a,b) => new Date(b.timestamp)-new Date(a.timestamp)).slice(0,30);
   const typeLabel = { checkin:'เข้างาน', checkout:'เลิกงาน', out:'ออกข้างนอก', back:'กลับเข้ามา' };
   const typeBadge = { checkin:'badge-success', checkout:'badge-danger', out:'badge-warning', back:'badge-info' };
   document.getElementById('modalHistoryBody').innerHTML = scans.length
@@ -1702,7 +1834,7 @@ function renderDayoffs() {
   if (!offs.length) { document.getElementById('dayoffBody').innerHTML = ''; empty.style.display='block'; return; }
   empty.style.display = 'none';
   document.getElementById('dayoffBody').innerHTML = offs.map(d => {
-    const u = db.users.find(x => x.id === d.userId);
+    const u = db.users.find(x => String(x.id) === String(d.userId));
     const dateDisplay = new Date(d.date).toLocaleDateString('th-TH', {day:'numeric',month:'long',year:'2-digit'});
     return `<tr>
       <td><strong>${u?.nickname || '?'}</strong><br><span style="font-size:12px;color:var(--text-muted)">${u?.fullname||''}</span></td>
@@ -1725,11 +1857,11 @@ function openAddDayoff() {
 }
 
 function openEditDayoff(id) {
-  const d = db.dayoffs.find(x => x.id === id);
+  const d = db.dayoffs.find(x => String(x.id) === String(id));
   if (!d) return;
   document.getElementById('modalDayoffTitle').textContent = '✏️ แก้ไขวันหยุด';
   const sel = document.getElementById('dUser');
-  sel.innerHTML = db.users.filter(u=>u.role==='user').map(u => `<option value="${u.id}" ${u.id===d.userId?'selected':''}>${u.nickname} — ${u.fullname}</option>`).join('');
+  sel.innerHTML = db.users.filter(u=>u.role==='user').map(u => `<option value="${u.id}" ${String(u.id)===String(d.userId)?'selected':''}>${u.nickname} — ${u.fullname}</option>`).join('');
   document.getElementById('dDate').value = d.date;
   document.getElementById('dNote').value = d.note || '';
   document.getElementById('dEditId').value = id;
