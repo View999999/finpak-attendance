@@ -1139,7 +1139,7 @@
 // ============================================================
 // CONFIG — แก้ไขค่านี้
 // ============================================================
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2LWAZ-9ToyGKSTuwfa2u5JxtztyV3g6BYW3c9oaD0Yp3F4T_FrgaeMv5RdaQDx4qQGQ/exec'; // แก้ตรงนี้
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwgmpaDh6uSt89eq5jAJH_SQVkwrfihpgK0dW0cA3vg6OY5h77R9QiWqNrdMQLuBKGmnw/exec'; // แก้ตรงนี้
 const OFFICE_LAT = 15.690170280773733; // ละติจูดออฟฟิศ
 const OFFICE_LNG = 100.10287369999999; // ลองจิจูดออฟฟิศ // ลองจิจูดออฟฟิศ
 const MAX_DISTANCE_M = 50; // ห่างได้ไม่เกิน 50 เมตร
@@ -1368,12 +1368,25 @@ function switchTab(pageId) {
 }
 
 async function syncAndRenderCalendar() {
+  // แสดง loading
+  document.getElementById('calGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted);font-size:14px;">⏳ กำลังโหลด...</div>';
   try {
     if (USE_SHEET()) {
-      const r = await apiCall({ action: 'getDayoffs' });
-      if (r.success) db.dayoffs = r.dayoffs;
+      // ดึง users + dayoffs พร้อมกัน
+      const [usersRes, dayoffsRes] = await Promise.all([
+        apiCall({ action: 'getUsers' }),
+        apiCall({ action: 'getDayoffs' }),
+      ]);
+      if (usersRes.success && usersRes.users.length) {
+        db.users = usersRes.users;
+        console.log('Users synced:', db.users.map(u => u.nickname + '=' + u.id));
+      }
+      if (dayoffsRes.success) {
+        db.dayoffs = dayoffsRes.dayoffs;
+        console.log('Dayoffs synced:', db.dayoffs.length, db.dayoffs);
+      }
     }
-  } catch(e) {}
+  } catch(e) { console.error('syncCalendar error:', e); }
   renderCalendar();
 }
 
