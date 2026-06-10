@@ -1227,7 +1227,7 @@ document.querySelectorAll('.modal-overlay').forEach(el => {
 // Enter to login
 document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
-// โหลดรหัสที่จำไว้
+// โหลดรหัสที่จำไว้ + Auto-login ถ้ามี session
 (function loadSaved() {
   try {
     const saved = JSON.parse(localStorage.getItem('finpak_remember') || 'null');
@@ -1237,6 +1237,36 @@ document.getElementById('loginPass').addEventListener('keydown', e => { if (e.ke
       document.getElementById('rememberMe').checked = true;
     }
   } catch(e) {}
+})();
+
+// Auto-login: ถ้ามี session ค้างอยู่ เข้าเลยไม่ต้อง login ใหม่
+(async function autoLogin() {
+  try {
+    const session = JSON.parse(localStorage.getItem('finpak_session') || 'null');
+    if (!session || !session.user) return;
+
+    // โหลด cache ทันที
+    const cached = JSON.parse(localStorage.getItem('finpak_db') || 'null');
+    if (cached) {
+      if (cached.users)   db.users   = cached.users;
+      if (cached.scans)   db.scans   = cached.scans;
+      if (cached.dayoffs) db.dayoffs = cached.dayoffs;
+    }
+
+    // เข้าสู่ระบบทันทีโดยไม่รอ
+    currentUser = session.user;
+    document.getElementById('topbarName').textContent = session.user.nickname || session.user.fullname;
+    document.getElementById('topbarRole').textContent = session.user.role === 'admin' ? '👑 Admin' : '👤 User';
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    buildNav();
+    initLocation();
+
+    // Sync ข้อมูลใหม่เบื้องหลัง
+    syncFromSheet();
+  } catch(e) {
+    localStorage.removeItem('finpak_session');
+  }
 })();
 
 // ============================================================
@@ -1300,6 +1330,12 @@ async function doLogin() {
   } catch(e) {}
 
   currentUser = found;
+
+  // บันทึก session ไว้
+  try {
+    localStorage.setItem('finpak_session', JSON.stringify({ user: found, savedAt: Date.now() }));
+  } catch(e) {}
+
   document.getElementById('topbarName').textContent = found.nickname || found.fullname;
   document.getElementById('topbarRole').textContent = found.role === 'admin' ? '👑 Admin' : '👤 User';
   document.getElementById('loginPage').style.display = 'none';
@@ -1346,6 +1382,10 @@ async function syncFromSheet() {
 
 function doLogout() {
   currentUser = null;
+  // ลบ session เมื่อออกจากระบบ
+  try {
+    localStorage.removeItem('finpak_session');
+  } catch(e) {}
   document.getElementById('loginPage').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
   document.getElementById('loginUser').value = '';
