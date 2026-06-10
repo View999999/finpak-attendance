@@ -7,6 +7,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>ฟินปาก หมูกระทะ นครสวรรค์</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#e85d04">
+<meta name="apple-mobile-web-app-title" content="ฟินปาก">
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=Kanit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1285,6 +1288,17 @@ async function doLogin() {
     }
   } catch(e) {}
 
+  // โหลด cache ก่อนทันที ไม่ต้องรอ Sheet
+  try {
+    const cached = localStorage.getItem('finpak_db');
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (parsed.users)   db.users   = parsed.users;
+      if (parsed.scans)   db.scans   = parsed.scans;
+      if (parsed.dayoffs) db.dayoffs = parsed.dayoffs;
+    }
+  } catch(e) {}
+
   currentUser = found;
   document.getElementById('topbarName').textContent = found.nickname || found.fullname;
   document.getElementById('topbarRole').textContent = found.role === 'admin' ? '👑 Admin' : '👤 User';
@@ -1295,6 +1309,18 @@ async function doLogin() {
 }
 
 async function syncFromSheet() {
+  // โหลด cache ก่อนทันที (เร็ว)
+  try {
+    const cached = localStorage.getItem('finpak_db');
+    if (cached) {
+      const parsed = JSON.parse(cached);
+      if (parsed.users)   db.users   = parsed.users;
+      if (parsed.scans)   db.scans   = parsed.scans;
+      if (parsed.dayoffs) db.dayoffs = parsed.dayoffs;
+    }
+  } catch(e) {}
+
+  // ดึงจาก Sheet เบื้องหลัง แล้วอัปเดต cache
   try {
     const now = new Date();
     const month = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
@@ -1303,10 +1329,18 @@ async function syncFromSheet() {
       apiCall({ action: 'getScans', userId: '', month }),
       apiCall({ action: 'getDayoffs' }),
     ]);
-    if (usersRes.success)   db.users   = usersRes.users;
+    if (usersRes.success && usersRes.users.length)   db.users   = usersRes.users;
     if (scansRes.success)   db.scans   = scansRes.scans;
     if (dayoffsRes.success) db.dayoffs = dayoffsRes.dayoffs;
-    console.log('Synced:', db.users.length, 'users,', db.scans.length, 'scans,', db.dayoffs.length, 'dayoffs');
+
+    // บันทึก cache
+    localStorage.setItem('finpak_db', JSON.stringify({
+      users: db.users,
+      scans: db.scans,
+      dayoffs: db.dayoffs,
+      cachedAt: Date.now()
+    }));
+    console.log('Synced & cached:', db.users.length, 'users,', db.scans.length, 'scans,', db.dayoffs.length, 'dayoffs');
   } catch(e) { console.warn('syncFromSheet failed', e); }
 }
 
@@ -1920,6 +1954,16 @@ async function deleteDayoff(id) {
   db.dayoffs = db.dayoffs.filter(d => String(d.id) !== String(id));
   showToast('ลบวันหยุดแล้ว', 'warning');
   renderDayoffs();
+}
+</script>
+<script>
+// Service Worker สำหรับ PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log('SW registered'))
+      .catch(e => console.log('SW failed:', e));
+  });
 }
 </script>
 </body>
