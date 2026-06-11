@@ -1824,6 +1824,10 @@ function renderAdminUsers() {
       <div class="user-actions">
         <button class="btn btn-info btn-sm" onclick="viewUserHistory(${u.id})">📋 ประวัติ</button>
         <button class="btn btn-secondary btn-sm" onclick="openEditUser(${u.id})">✏️ แก้ไข</button>
+        <button class="btn btn-warning btn-sm"
+        onclick="resetPassword('${u.id}')">
+  🔑 รีเซ็ต
+</button>
         <button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})">🗑️</button>
       </div>
     </div>
