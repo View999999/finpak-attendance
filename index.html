@@ -1036,12 +1036,10 @@
       <div class="card">
         <div class="section-header">
           <div class="card-title" style="margin:0">👤 จัดการพนักงาน</div>
-         <button class="btn btn-primary btn-sm"
-        onclick="openAddUser()"
-        style="display:none">
-  + เพิ่มพนักงาน
-</button>
         </div>
+        <p style="font-size:13px;color:var(--text-muted);margin:-6px 0 14px;">
+          ➕ เพิ่มพนักงานใหม่ได้ที่ระบบ <strong>Payroll</strong> เท่านั้น พนักงานที่เพิ่มแล้วจะ sync มาที่นี่อัตโนมัติ
+        </p>
         <div class="user-list" id="adminUserList"></div>
       </div>
     </div>
@@ -1067,13 +1065,33 @@
         </div>
       </div>
     </div>
+
+    <!-- SETTINGS: CHANGE OWN PASSWORD -->
+    <div class="page" id="pageSettings">
+      <div class="card">
+        <div class="card-title">🔑 เปลี่ยนรหัสผ่านของฉัน</div>
+        <div class="form-group">
+          <label>รหัสผ่านเดิม</label>
+          <input type="password" id="cpOld" placeholder="รหัสผ่านปัจจุบัน">
+        </div>
+        <div class="form-group">
+          <label>รหัสผ่านใหม่</label>
+          <input type="password" id="cpNew" placeholder="อย่างน้อย 4 ตัวอักษร">
+        </div>
+        <div class="form-group">
+          <label>ยืนยันรหัสผ่านใหม่</label>
+          <input type="password" id="cpConfirm" placeholder="พิมพ์รหัสผ่านใหม่อีกครั้ง">
+        </div>
+        <button class="btn btn-primary" onclick="changeOwnPassword()">💾 บันทึกรหัสผ่านใหม่</button>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- MODAL: ADD/EDIT USER -->
 <div class="modal-overlay" id="modalUser">
   <div class="modal">
-    <div class="modal-title" id="modalUserTitle">👤 เพิ่มพนักงาน</div>
+    <div class="modal-title" id="modalUserTitle">✏️ แก้ไขพนักงาน</div>
     <div class="form-group">
       <label>ชื่อ-นามสกุล</label>
       <input type="text" id="uFullname" placeholder="เช่น นายสมชาย ใจดี">
@@ -1146,7 +1164,7 @@
 // ============================================================
 // CONFIG — แก้ไขค่านี้
 // ============================================================
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwgmpaDh6uSt89eq5jAJH_SQVkwrfihpgK0dW0cA3vg6OY5h77R9QiWqNrdMQLuBKGmnw/exec'; // แก้ตรงนี้
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwgmpaDh6uSt89eq5jAJH_SQVkwrfihpgK0dW0cA3vg6OY5h77R9QiWqNrdMQLuBKGmnw/exec'; // ⚠️ TODO: เปลี่ยนเป็น URL จาก Apps Script project ใหม่ (แยกจาก Payroll) หลัง deploy เสร็จ
 const OFFICE_LAT = 15.690170280773733; // ละติจูดออฟฟิศ
 const OFFICE_LNG = 100.10287369999999; // ลองจิจูดออฟฟิศ // ลองจิจูดออฟฟิศ
 const MAX_DISTANCE_M = 50; // ห่างได้ไม่เกิน 50 เมตร
@@ -1408,12 +1426,14 @@ function buildNav() {
       { id: 'pageScan', label: '👆 บันทึกเวลา' },
       { id: 'pageHistory', label: '📋 ประวัติ' },
       { id: 'pageCalendar', label: '📅 ปฏิทิน' },
+      { id: 'pageSettings', label: '⚙️ ตั้งค่า' },
     ];
   } else {
     tabs = [
       { id: 'pageDashboard', label: '📊 Dashboard' },
       { id: 'pageUsers', label: '👥 พนักงาน' },
       { id: 'pageDayoff', label: '🏖️ วันหยุด' },
+      { id: 'pageSettings', label: '⚙️ ตั้งค่า' },
     ];
   }
   tabs.forEach((t, i) => {
@@ -1432,8 +1452,8 @@ function switchTab(pageId) {
   document.getElementById(pageId).classList.add('active');
   const tabs = document.querySelectorAll('.nav-tab');
   const pages = currentUser.role === 'user'
-    ? ['pageScan','pageHistory','pageCalendar']
-    : ['pageDashboard','pageUsers','pageDayoff'];
+    ? ['pageScan','pageHistory','pageCalendar','pageSettings']
+    : ['pageDashboard','pageUsers','pageDayoff','pageSettings'];
   const idx = pages.indexOf(pageId);
   if (tabs[idx]) tabs[idx].classList.add('active');
 
@@ -1822,27 +1842,13 @@ function renderAdminUsers() {
         <div class="sub">@${u.username} · ${u.position}</div>
       </div>
       <div class="user-actions">
-        <button class="btn btn-info btn-sm" onclick="viewUserHistory(${u.id})">📋 ประวัติ</button>
-        <button class="btn btn-secondary btn-sm" onclick="openEditUser(${u.id})">✏️ แก้ไข</button>
-        <button class="btn btn-warning btn-sm"
-        onclick="resetPassword('${u.id}')">
-  🔑 รีเซ็ต
-</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})">🗑️</button>
+        <button class="btn btn-info btn-sm" onclick="viewUserHistory('${u.id}')">📋 ประวัติ</button>
+        <button class="btn btn-secondary btn-sm" onclick="openEditUser('${u.id}')">✏️ แก้ไข</button>
+        <button class="btn btn-warning btn-sm" onclick="resetPassword('${u.id}')">🔑 รีเซ็ต</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">🗑️</button>
       </div>
     </div>
   `).join('');
-}
-
-function openAddUser() {
-  document.getElementById('modalUserTitle').textContent = '👤 เพิ่มพนักงาน';
-  document.getElementById('uFullname').value = '';
-  document.getElementById('uNickname').value = '';
-  document.getElementById('uUsername').value = '';
-  document.getElementById('uPassword').value = '';
-  document.getElementById('uRole2').value = '';
-  document.getElementById('uEditId').value = '';
-  openModal('modalUser');
 }
 
 function openEditUser(id) {
@@ -1860,6 +1866,10 @@ function openEditUser(id) {
 
 async function saveUser() {
   const id = document.getElementById('uEditId').value;
+  if (!id) {
+    showToast('เพิ่มพนักงานใหม่ได้ที่ระบบ Payroll เท่านั้น', 'error');
+    return;
+  }
   const data = {
     fullname: document.getElementById('uFullname').value.trim(),
     nickname: document.getElementById('uNickname').value.trim(),
@@ -1870,29 +1880,58 @@ async function saveUser() {
   const pass = document.getElementById('uPassword').value;
   if (!data.fullname || !data.username) { showToast('กรุณากรอกข้อมูลให้ครบ', 'error'); return; }
 
-  if (id) {
-    const payload = { ...data, id };
-    if (pass) payload.password = pass;
-    if (USE_SHEET()) {
-      const r = await apiCall({ action: 'editUser', data: JSON.stringify(payload) });
-      if (!r.success) { showToast('❌ ' + r.error, 'error'); return; }
-    }
-    const u = db.users.find(x => String(x.id) === String(id));
-    if (u) { Object.assign(u, data); if (pass) u.password = pass; }
-    showToast('✅ แก้ไขข้อมูลสำเร็จ');
-  } else {
-    if (!pass) { showToast('กรุณากำหนดรหัสผ่าน', 'error'); return; }
-    const newUser = { id: Date.now(), ...data, password: pass };
-    if (USE_SHEET()) {
-      const r = await apiCall({ action: 'addUser', data: JSON.stringify(newUser) });
-      if (!r.success) { showToast('❌ ' + r.error, 'error'); return; }
-      if (r.id) newUser.id = r.id;
-    }
-    db.users.push(newUser);
-    showToast('✅ เพิ่มพนักงานสำเร็จ');
+  const payload = { ...data, id };
+  if (pass) payload.password = pass;
+  if (USE_SHEET()) {
+    const r = await apiCall({ action: 'editUser', data: JSON.stringify(payload) });
+    if (!r.success) { showToast('❌ ' + r.error, 'error'); return; }
   }
+  const u = db.users.find(x => String(x.id) === String(id));
+  if (u) { Object.assign(u, data); if (pass) u.password = pass; }
+  showToast('✅ แก้ไขข้อมูลสำเร็จ');
   closeModal('modalUser');
   renderAdminUsers();
+}
+
+async function resetPassword(id) {
+  if (!confirm('รีเซ็ตรหัสผ่านพนักงานคนนี้กลับเป็น 1234 ใช่ไหม?')) return;
+  if (USE_SHEET()) {
+    const r = await apiCall({ action: 'editUser', data: JSON.stringify({ id, password: '1234' }) });
+    if (!r.success) { showToast('❌ ' + r.error, 'error'); return; }
+  }
+  const u = db.users.find(x => String(x.id) === String(id));
+  if (u) u.password = '1234';
+  showToast('✅ รีเซ็ตรหัสผ่านเป็น 1234 แล้ว');
+}
+
+async function changeOwnPassword() {
+  const oldPass = document.getElementById('cpOld').value;
+  const newPass = document.getElementById('cpNew').value;
+  const confirmPass = document.getElementById('cpConfirm').value;
+
+  if (!oldPass || !newPass || !confirmPass) {
+    showToast('กรุณากรอกข้อมูลให้ครบ', 'error'); return;
+  }
+  if (newPass.length < 4) {
+    showToast('รหัสผ่านใหม่ต้องมีอย่างน้อย 4 ตัวอักษร', 'error'); return;
+  }
+  if (newPass !== confirmPass) {
+    showToast('รหัสผ่านใหม่ทั้งสองช่องไม่ตรงกัน', 'error'); return;
+  }
+
+  if (USE_SHEET()) {
+    const r = await apiCall({
+      action: 'changeOwnPassword',
+      data: JSON.stringify({ id: currentUser.id, oldPassword: oldPass, newPassword: newPass })
+    });
+    if (!r.success) { showToast('❌ ' + r.error, 'error'); return; }
+  }
+  const u = db.users.find(x => String(x.id) === String(currentUser.id));
+  if (u) u.password = newPass;
+  document.getElementById('cpOld').value = '';
+  document.getElementById('cpNew').value = '';
+  document.getElementById('cpConfirm').value = '';
+  showToast('✅ เปลี่ยนรหัสผ่านสำเร็จ');
 }
 
 async function deleteUser(id) {
