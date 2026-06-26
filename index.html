@@ -1401,7 +1401,30 @@ async function syncFromSheet() {
     console.log('Synced & cached:', db.users.length, 'users,', db.scans.length, 'scans,', db.dayoffs.length, 'dayoffs');
   } catch(e) { console.warn('syncFromSheet failed', e); }
 }
-
+async function syncAndRenderHistory() {
+  try {
+    if (USE_SHEET()) {
+      const now = new Date();
+      const month = document.getElementById('historyMonth').value || 
+        `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+      const [scansRes] = await Promise.all([
+        apiCall({ action: 'getScans', userId: String(currentUser.id), month }),
+      ]);
+      if (scansRes.success) {
+        // อัปเดตเฉพาะ scans ของ user คนนี้
+        const [y, m] = month.split('-').map(Number);
+        db.scans = [
+          ...db.scans.filter(s => {
+            const d = new Date(s.timestamp);
+            return !(String(s.userId) === String(currentUser.id) && d.getFullYear() === y && d.getMonth()+1 === m);
+          }),
+          ...scansRes.scans
+        ];
+      }
+    }
+  } catch(e) { console.warn('syncHistory error:', e); }
+  renderHistory();
+}
 function doLogout() {
   currentUser = null;
   // ลบ session เมื่อออกจากระบบ
@@ -1458,7 +1481,7 @@ function switchTab(pageId) {
   if (tabs[idx]) tabs[idx].classList.add('active');
 
   // Init on switch
-  if (pageId === 'pageHistory') renderHistory();
+  if (pageId === 'pageHistory') syncAndRenderHistory();
   if (pageId === 'pageCalendar') syncAndRenderCalendar();
   if (pageId === 'pageDashboard') syncAndRenderDashboard();
   if (pageId === 'pageUsers') renderAdminUsers();
