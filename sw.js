@@ -1,5 +1,5 @@
 // Service Worker — ฟินปาก หมูกระทะ นครสวรรค์
-const CACHE_NAME = 'finpak-v3'; // ⚠️ ทุกครั้งที่แก้ index.html ต้อง bump เลขนี้ขึ้น (v3, v4, ...) ไม่งั้น cache จะค้าง
+const CACHE_NAME = 'finpak-v4'; // ⚠️ ทุกครั้งที่แก้ index.html ต้อง bump เลขนี้ขึ้น (v3, v4, ...) ไม่งั้น cache จะค้าง
 const ASSETS = [
   './',
   './index.html',
