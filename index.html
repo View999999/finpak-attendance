@@ -1504,6 +1504,20 @@ async function syncAndRenderDashboard() {
   renderDashboard();
 }
 
+async function syncAndRenderHistory() {
+  try {
+    if (USE_SHEET()) {
+      const now = new Date();
+      const month = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+      const res = await apiCall({ action: 'getScans', userId: currentUser.id, month });
+      if (res.success && res.scans) {
+        db.scans = [...db.scans.filter(s => String(s.userId) !== String(currentUser.id)), ...res.scans];
+      }
+    }
+  } catch(e) { console.error('syncHistory error:', e); }
+  renderHistory();
+}
+
 async function syncAndRenderDayoffs() {
   try {
     if (USE_SHEET()) {
@@ -1971,7 +1985,7 @@ function renderDayoffs() {
     const u = db.users.find(x => String(x.id) === String(d.userId));
     const dateDisplay = new Date(d.date).toLocaleDateString('th-TH', {day:'numeric',month:'long',year:'2-digit'});
     return `<tr>
-      <td><strong>${u?.nickname || '?'}</strong><br><span style="font-size:12px;color:var(--text-muted)">${u?.fullname||''}</span></td>
+      <td><strong>${u?.nickname || '?'}</strong></td>
       <td>${dateDisplay}</td>
       <td>${d.note || '-'}</td>
       <td><button class="btn btn-secondary btn-sm" onclick="openEditDayoff(${d.id})">✏️</button>
@@ -1983,7 +1997,7 @@ function renderDayoffs() {
 function openAddDayoff() {
   document.getElementById('modalDayoffTitle').textContent = '🏖️ กำหนดวันหยุด';
   const sel = document.getElementById('dUser');
-  sel.innerHTML = db.users.filter(u=>u.role==='user').map(u => `<option value="${u.id}">${u.nickname} — ${u.fullname}</option>`).join('');
+  sel.innerHTML = db.users.filter(u=>u.role==='user').map(u => `<option value="${u.id}">${u.nickname}</option>`).join('');
   document.getElementById('dDate').value = todayStr();
   document.getElementById('dNote').value = '';
   document.getElementById('dEditId').value = '';
@@ -1995,7 +2009,7 @@ function openEditDayoff(id) {
   if (!d) return;
   document.getElementById('modalDayoffTitle').textContent = '✏️ แก้ไขวันหยุด';
   const sel = document.getElementById('dUser');
-  sel.innerHTML = db.users.filter(u=>u.role==='user').map(u => `<option value="${u.id}" ${String(u.id)===String(d.userId)?'selected':''}>${u.nickname} — ${u.fullname}</option>`).join('');
+  sel.innerHTML = db.users.filter(u=>u.role==='user').map(u => `<option value="${u.id}" ${String(u.id)===String(d.userId)?'selected':''}>${u.nickname}</option>`).join('');
   document.getElementById('dDate').value = d.date;
   document.getElementById('dNote').value = d.note || '';
   document.getElementById('dEditId').value = id;
